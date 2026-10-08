@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#fff7fa">
+  <title>Uma surpresa do Zeus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&family=Sniglet:wght@400;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light;
+      --paper: #fff8fb;
+      --ink: #35212b;
+      --muted: #745d69;
+      --rose: #f28db4;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      min-width: 320px;
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background-color: var(--paper);
+      background-image:
+        radial-gradient(#f4c6d722 0.8px, transparent 0.8px),
+        radial-gradient(ellipse at 12% 18%, #ffe4ed99, transparent 38%),
+        radial-gradient(ellipse at 88% 82%, #ffecf499, transparent 34%);
+      background-size: 15px 15px, auto, auto;
+      font-family: "Sniglet", sans-serif;
+    }
+
+    button { font: inherit; }
+
+    .page {
+      width: min(1120px, calc(100% - 64px));
+      min-height: 100vh;
+      margin-inline: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .topline {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding-block: 28px;
+      color: #855b70;
+      font-family: "Grand Hotel", cursive;
+      font-size: 25px;
+    }
+
+    .topline-mark {
+      width: 27px;
+      height: 27px;
+      display: grid;
+      place-items: center;
+      border: 1px solid #edcbd8;
+      border-radius: 50%;
+      color: var(--rose);
+      font-size: 15px;
+    }
+
+    .content {
+      flex: 1;
+      display: grid;
+      grid-template-columns: minmax(290px, 0.86fr) minmax(420px, 1.14fr);
+      align-items: center;
+      gap: clamp(32px, 6vw, 88px);
+      padding-block: 20px 58px;
+    }
+
+    .intro {
+      max-width: 420px;
+      padding-bottom: 16px;
+      transition: opacity 450ms ease, transform 450ms ease;
+    }
+
+    .eyebrow {
+      margin: 0 0 17px;
+      color: #c85c83;
+      font-family: "Grand Hotel", cursive;
+      font-size: 24px;
+    }
+
+    h1, h2, p { margin-top: 0; }
+
+    h1 {
+      max-width: 440px;
+      margin-bottom: 19px;
+      font-size: clamp(40px, 5vw, 62px);
+      font-weight: 800;
+      line-height: 1.08;
+    }
+
+    .intro-copy {
+      max-width: 340px;
+      margin-bottom: 27px;
+      color: var(--muted);
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .start-button, .again-button {
+      min-height: 52px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 0;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: background-color 180ms ease, transform 180ms ease;
+    }
+
+    .start-button {
+      padding: 0 21px;
+      color: var(--ink);
+      background: #ffc5db;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .start-button:hover:not(:disabled) { background: #f6a9c6; transform: translateY(-2px); }
+    .start-button:focus-visible, .again-button:focus-visible { outline: 3px solid #f28db4; outline-offset: 4px; }
+    .start-button:disabled { cursor: default; opacity: 0.8; }
+    .button-arrow { font-size: 18px; line-height: 1; }
+
+    .small-note {
+      margin: 14px 0 0;
+      color: #907986;
+      font-size: 12px;
+    }
+
+    .garden {
+      position: relative;
+      min-height: 0;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      isolation: isolate;
+      border: 2px solid #f4c4d7;
+      border-radius: 28px;
+      background: #000;
+      box-shadow: 0 22px 50px #9d53621a;
+    }
+
+    .zeus-video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      background: #000;
+    }
+
+    .garden.is-open {
+      aspect-ratio: auto;
+      min-height: 620px;
+    }
+
+    .letter {
+      position: absolute;
+      z-index: 2;
+      top: 50%;
+      left: 50%;
+      width: min(410px, calc(100% - 38px));
+      padding: clamp(25px, 4vw, 39px);
+      border: 1px solid #f28db4;
+      border-radius: 20px;
+      color: #ff9fc5;
+      background: #050305;
+      box-shadow: 0 20px 55px #0008;
+      transform: translate(-50%, -43%) scale(.93);
+    }
+
+    .garden.is-open .letter { animation: letter-in 850ms cubic-bezier(.2,.75,.25,1) both; }
+
+    .letter-flower {
+      display: block;
+      margin-bottom: 8px;
+      color: #ff9fc5;
+      font-size: 38px;
+      line-height: 1;
+    }
+
+    .letter h2 {
+      margin-bottom: 15px;
+      color: #ff9fc5;
+      font-size: clamp(28px, 4vw, 36px);
+      font-weight: 800;
+      line-height: 1.16;
+    }
+
+    .letter p {
+      margin-bottom: 13px;
+      color: #ffb7d3;
+      font-size: 13px;
+      line-height: 1.72;
+    }
+
+    .letter .signoff {
+      margin: 19px 0 20px;
+      color: #ff9fc5;
+      font-family: "Grand Hotel", cursive;
+      font-size: 32px;
+    }
+
+    .again-button {
+      min-height: 38px;
+      padding: 0 12px;
+      border: 1px solid #f28db4;
+      border-radius: 999px;
+      color: #ffb7d3;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .again-button:hover { background: #26141e; }
+    [hidden] { display: none !important; }
+
+    footer {
+      padding: 0 0 25px;
+      color: #907986;
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @keyframes letter-in {
+      from { opacity: 0; transform: translate(-50%, -39%) scale(.93); }
+      to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+    }
+
+    @media (max-width: 900px) {
+      .page { width: min(560px, calc(100% - 36px)); }
+      .topline { padding-block: 19px 10px; }
+      .content { grid-template-columns: 1fr; gap: 22px; padding-block: 21px 30px; }
+      .intro { max-width: 500px; padding-bottom: 0; }
+      h1 { max-width: 480px; font-size: clamp(43px, 11vw, 59px); }
+      .intro-copy { margin-bottom: 18px; }
+      .small-note { margin-top: 10px; }
+      .garden { aspect-ratio: 16 / 9; }
+      .garden.is-open { min-height: 620px; }
+      .letter { width: min(410px, calc(100% - 26px)); padding: 24px; }
+      .letter p { font-size: 12px; }
+      footer { padding-bottom: 16px; }
+    }
+
+    @media (max-width: 390px) {
+      .page { width: calc(100% - 28px); }
+      .content { gap: 17px; }
+      .letter { padding: 20px; }
+      .letter p { margin-bottom: 10px; font-size: 11px; }
+      .letter h2 { font-size: 29px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="topline"><span class="topline-mark" aria-hidden="true">&#10084;</span> um carinho, só seu</header>
+    <main class="content">
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">um recadinho pra hoje</p>
+        <h1 id="page-title">O Zeus veio cuidar de você.</h1>
+        <p class="intro-copy">Ele trouxe até uma rosinha, olha!</p>
+        <button class="start-button" id="start" type="button">
+          <span>Receber minha surpresa</span><span class="button-arrow" aria-hidden="true">&#8594;</span>
+        </button>
+        <p class="small-note">A gente te ama muito princesa.</p>
+      </section>
+
+      <section class="garden" id="garden" aria-label="Vídeo do Zeus levando uma rosa">
+        <video class="zeus-video" id="zeus-video" preload="metadata" playsinline poster="./zeus.jpg" aria-label="Zeus carregando uma rosa">
+          <source src="./zeusrosa.mp4" type="video/mp4">
+          Seu navegador não consegue reproduzir este vídeo.
+        </video>
+        <article class="letter" id="letter" hidden>
+          <span class="letter-flower" aria-hidden="true">&#127801;</span>
+          <h2>Você é incrível, sabia?</h2>
+          <p>Eu sei que alguns dias fazem tudo parecer distante, até a esperança. Você não precisa resolver tudo hoje, nem carregar tudo sozinha.</p>
+          <p>Você é muito amada. Pode contar comigo sempre: pra conversar, ficar em silêncio ou passar um dia de cada vez.</p>
+          <p>Sempre deixe a cabeça erguida, meu bem. Sua coroa continua aí, mesmo nos dias difíceis. Todos têm que ver o brilho que ela tem. E você não precisa provar nada a ninguém.</p>
+          <p class="signoff">Com todo o meu amor.</p>
+          <button class="again-button" id="again" type="button">&#8634; Ver de novo</button>
+        </article>
+      </section>
+    </main>
+    <footer>Um passo de cada vez. Você não está sozinha. &#10084;</footer>
+  </div>
+  <script>
+    const garden = document.querySelector("#garden");
+    const startButton = document.querySelector("#start");
+    const againButton = document.querySelector("#again");
+    const letter = document.querySelector("#letter");
+    const video = document.querySelector("#zeus-video");
+    const smallNote = document.querySelector(".small-note");
+
+    function openLetter() {
+      garden.classList.add("is-open");
+      letter.hidden = false;
+      window.setTimeout(() => {
+        const bounds = letter.getBoundingClientRect();
+        const targetTop = window.scrollY + bounds.top - (window.innerHeight - letter.offsetHeight) / 2;
+        window.scrollTo({ top: Math.max(0, targetTop), behavior: "auto" });
+      }, 850);
+    }
+
+    startButton.addEventListener("click", async () => {
+      startButton.disabled = true;
+      startButton.querySelector("span").textContent = "Sua surpresa está chegando...";
+      try {
+        await video.play();
+      } catch (error) {
+        console.error("Não foi possível reproduzir o vídeo do Zeus.", error);
+        startButton.disabled = false;
+        startButton.querySelector("span").textContent = "Tentar de novo";
+        smallNote.textContent = "Não foi possível reproduzir o vídeo. Tente novamente.";
+      }
+    });
+
+    video.addEventListener("ended", openLetter);
+
+    againButton.addEventListener("click", () => {
+      letter.hidden = true;
+      garden.classList.remove("is-open");
+      video.pause();
+      video.currentTime = 0;
+      startButton.disabled = false;
+      startButton.querySelector("span").textContent = "Receber minha surpresa";
+      smallNote.textContent = "Feito com muito amor, pensando em você.";
+      startButton.focus();
+    });
+  </script>
+</body>
+</html>
